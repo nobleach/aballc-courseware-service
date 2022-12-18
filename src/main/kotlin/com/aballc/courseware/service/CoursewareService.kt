@@ -3,8 +3,8 @@ package com.aballc.courseware.service
 import com.aballc.courseware.repository.CoursewareRepository
 import javax.inject.Inject
 import javax.enterprise.context.ApplicationScoped
-import javax.transaction.Transactional
 import java.time.ZonedDateTime
+import java.util.UUID
 
 import com.aballc.courseware.entity.CourseEntity
 import com.aballc.courseware.dto.CourseDto
@@ -26,7 +26,17 @@ class CoursewareService(
     }
   }
 
-  @Transactional
+  fun getById(courseId: UUID): CourseDto {
+    val courseEntity = coursewareRepository.findById(courseId)
+
+    return CourseDto(
+      id = courseEntity.id,
+      courseEntity.courseName,
+      courseEntity.description,
+      courseEntity.thumbnail
+    )
+  }
+
   fun saveCourse(course: CourseDto): Unit {
     val courseEntity = CourseEntity(
       id = null,
